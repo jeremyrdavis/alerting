@@ -10,5 +10,7 @@
   <property name="hibernate.current_session_context_class">thread</property>
   <property name="hibernate.show_sql">false</property>
   <mapping resource="Link.hbm.xml"/>
+  <mapping resource="Attribute.hbm.xml"/>
+  <mapping resource="Equipment.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

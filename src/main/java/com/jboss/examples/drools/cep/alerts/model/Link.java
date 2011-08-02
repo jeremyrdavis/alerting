@@ -1,6 +1,10 @@
 package com.jboss.examples.drools.cep.alerts.model;
 
-public class Link {
+import java.io.Serializable;
+
+public class Link implements Serializable{
+
+	private static final long serialVersionUID = 7086359566835420893L;
 
 	private int id;
 	

@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jul 23, 2011 9:33:23 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-	<class name="com.jboss.examples.cep.alerts.model.Attributes"
+	<class name="com.jboss.examples.drools.cep.alerts.model.Attribute"
 		table="attributes" catalog="alerts_development">
         <id name="id" type="int">
             <column name="id" />
