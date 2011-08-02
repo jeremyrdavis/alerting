@@ -1,0 +1,20 @@
+package com.jboss.examples.drools.cep.alerts.rules
+ 
+import com.sample.Alert;
+import com.jboss.examples.drools.cep.alerts.model.Attribute;
+import com.jboss.examples.drools.cep.alerts.model.Equipment;
+import com.jboss.examples.drools.cep.alerts.model.Link;
+
+import com.jboss.examples.drools.cep.alerts.services.CAPService;
+import com.jboss.examples.drools.cep.alerts.services.DataService;
+
+global com.jboss.examples.drools.cep.alerts.services.CAPService capService;
+global com.jboss.examples.drools.cep.alerts.services.DataService dataService;
+
+rule "Device name must be DEVICE2"
+    ruleflow-group "Device2 Rules"
+    when
+        $alert : Alert( )
+    then
+        System.out.println("Alert");
+end
