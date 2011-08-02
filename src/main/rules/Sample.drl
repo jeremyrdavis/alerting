@@ -1,0 +1,88 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+
+import com.jboss.examples.drools.cep.alerts.services.CAPService;
+import com.jboss.examples.drools.cep.alerts.services.DataService;
+
+global com.jboss.examples.drools.cep.alerts.services.CAPService capService;
+global com.jboss.examples.drools.cep.alerts.services.DataService dataService;
+
+declare Alert
+    @role( event )
+end
+
+declare Alarm
+    @role( event )
+end
+
+rule "Fire off CAP"
+    dialect "mvel"
+    when
+        $alarm : Alarm( $alarmTime : time )
+        $alert : Alert( time.time < $alarmTime.time )
+    then
+        System.out.println("Sending CAP Alert");
+        capService.sendCAPAlert($alert);
+end
+ 
+rule "Create New Link When SystemAlert Arrives"
+    when
+        $s : SystemAlert( status == AlertStatus.ACTIVE )
+    then
+        Alert a = new Alert( $s );
+        Link downStreamLink = dataService.lookupDownstreamLink( a.getDeviceName() );
+        Link upStreamLink = dataService.lookupUpstreamLink( a.getDeviceName() );
+        a.setUpstreamLink( upStreamLink.getUpstreamPort() );
+        a.setDownstreamLink( downStreamLink.getDownstreamPort() );
+        System.out.println("new SystemAlert received.  Creating Alert :" + a.getId() + " for device : " + a.getDeviceName() + " for upstreamLink : " + a.getUpstreamLink());
+        retract($s);
+        insert(a);
+end
+
+rule "Check Against a Derived Alert" 
+    salience 10
+    when
+       $derivedAlert : DerivedAlert()
+       $systemAlert : SystemAlert( deviceName memberOf $derivedAlert.deviceNames )
+    then
+        System.out.println("DerivedAlert exists");
+        #create Alert
+        Alert a = new Alert( $systemAlert );
+        Link upstreamLink = dataService.lookupUpstreamLink( a.getDeviceName() );
+        Link downStreamLink = dataService.lookupDownstreamLink( a.getDeviceName() );
+        a.setUpstreamLink( upstreamLink.getUpstreamPort() );
+        a.setDownstreamLink( downStreamLink.getDownstreamPort() );
+        System.out.println("Alert created");
+        $derivedAlert.addAlert( a );
+        System.out.println("Added to DerivedAlert");
+        retract($systemAlert);
+        update( $derivedAlert );
+end
+
+rule "Check Against Existing Alerts"
+    /*
+        When a new SystemAlert arrives, check it against the Alerts in memory.
+        If there is a match then create a DerivedAlert.
+    */
+    salience 9
+    when
+       $existingAlert : Alert()
+       $systemAlert : SystemAlert( deviceName == $existingAlert.deviceName )
+    then
+        System.out.println("Previous Alert exists");
+        #create Alert
+        Alert a = new Alert( $systemAlert );
+        Link upstreamLink = dataService.lookupUpstreamLink( a.getDeviceName() );
+        Link downStreamLink = dataService.lookupDownstreamLink( a.getDeviceName() );
+        a.setUpstreamLink( upstreamLink.getUpstreamPort() );
+        a.setDownstreamLink( downStreamLink.getDownstreamPort() );
+        System.out.println("Alert created");
+        #create DerivedAlert
+        DerivedAlert derivedAlert = new DerivedAlert();
+        derivedAlert.addAlert(a);
+        derivedAlert.addAlert($existingAlert);
+        retract($systemAlert);
+        retract($existingAlert);
+        insert(derivedAlert);
+end
