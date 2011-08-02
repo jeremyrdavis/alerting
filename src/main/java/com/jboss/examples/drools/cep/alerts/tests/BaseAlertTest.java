@@ -17,7 +17,10 @@ import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
 public class BaseAlertTest {
+	
 	protected static String[] drlFiles;
+	
+	protected static String[] flowFiles;
 
 	protected StatefulKnowledgeSession createKnowledgeSession()
 			throws Exception {
@@ -36,6 +39,12 @@ public class BaseAlertTest {
 		for (int i = 0; i < drlFiles.length; i++) {
 			kbuilder.add(ResourceFactory.newClassPathResource(drlFiles[i]),
 					ResourceType.DRL);
+		}
+		
+		// if we have ruleflow files add them
+		if( flowFiles != null && 1 >= flowFiles.length){
+			for( int i = 0; i < flowFiles.length; i++ )
+				kbuilder.add(ResourceFactory.newClassPathResource(flowFiles[i]), ResourceType.DRF);
 		}
 		KnowledgeBuilderErrors errors = kbuilder.getErrors();
 		if (errors.size() > 0) {

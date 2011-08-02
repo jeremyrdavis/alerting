@@ -1,6 +1,9 @@
 package com.sample
  
 import com.sample.DroolsTest.Message;
+import com.jboss.examples.drools.cep.alerts.model.Attribute;
+import com.jboss.examples.drools.cep.alerts.model.Equipment;
+import com.jboss.examples.drools.cep.alerts.model.Link;
 
 import com.jboss.examples.drools.cep.alerts.services.CAPService;
 import com.jboss.examples.drools.cep.alerts.services.DataService;
