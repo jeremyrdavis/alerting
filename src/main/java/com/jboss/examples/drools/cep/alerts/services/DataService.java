@@ -1,6 +1,6 @@
 package com.jboss.examples.drools.cep.alerts.services;
 
-import com.sample.Link;
+import com.jboss.examples.drools.cep.alerts.model.Link;
 
 public class DataService {
 	
