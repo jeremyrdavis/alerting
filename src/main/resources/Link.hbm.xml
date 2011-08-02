@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 23, 2011 9:33:23 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.jboss.examples.drools.cep.alerts.model.Link" table="links" catalog="alerts_development">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="upstreamPort" type="string">
+            <column name="upstream_port" length="35" not-null="true" />
+        </property>
+        <property name="downstreamPort" type="string">
+            <column name="downstream_port" length="35" not-null="true" />
+        </property>
+        <property name="upstreamDevice" type="string">
+            <column name="upstream_device" length="35" not-null="true" />
+        </property>
+        <property name="downstreamDevice" type="string">
+            <column name="downstream_device" length="35" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

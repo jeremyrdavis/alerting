@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 23, 2011 9:33:23 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.jboss.examples.cep.alerts.model.Attributes"
+		table="attributes" catalog="alerts_development">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+		<property name="equipmentId" type="int">
+			<column name="equipment_id" />
+		</property>
+		<property name="hubHostName" type="string">
+			<column name="hub_host_name" length="35" not-null="true" />
+		</property>
+		<property name="rack" type="int">
+			<column name="rack" not-null="true" />
+		</property>
+		<property name="shelf" type="int">
+			<column name="shelf" not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>
