@@ -1,6 +1,6 @@
 package com.jboss.examples.drools.cep.alerts.rules
  
-import com.sample.Alert;
+import com.jboss.examples.drools.cep.alerts.model.Alert;
 import com.jboss.examples.drools.cep.alerts.model.Attribute;
 import com.jboss.examples.drools.cep.alerts.model.Equipment;
 import com.jboss.examples.drools.cep.alerts.model.Link;

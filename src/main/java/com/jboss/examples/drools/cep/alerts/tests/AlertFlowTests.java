@@ -4,7 +4,7 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sample.Alert;
+import com.jboss.examples.drools.cep.alerts.model.Alert;
 
 public class AlertFlowTests extends BaseAlertTest{
 

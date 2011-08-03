@@ -1,9 +1,13 @@
 package com.sample
  
 import com.sample.DroolsTest.Message;
+import com.jboss.examples.drools.cep.alerts.model.Alert;
+import com.jboss.examples.drools.cep.alerts.model.AlertStatus;
+import com.jboss.examples.drools.cep.alerts.model.DerivedAlert;
 import com.jboss.examples.drools.cep.alerts.model.Attribute;
 import com.jboss.examples.drools.cep.alerts.model.Equipment;
 import com.jboss.examples.drools.cep.alerts.model.Link;
+import com.jboss.examples.drools.cep.alerts.model.SystemAlert;
 
 import com.jboss.examples.drools.cep.alerts.services.CAPService;
 import com.jboss.examples.drools.cep.alerts.services.DataService;
@@ -36,9 +40,9 @@ rule "Create New Link When SystemAlert Arrives"
         Alert a = new Alert( $s );
         Link downStreamLink = dataService.lookupDownstreamLink( a.getDeviceName() );
         Link upStreamLink = dataService.lookupUpstreamLink( a.getDeviceName() );
-        a.setUpstreamLink( upStreamLink.getUpstreamPort() );
-        a.setDownstreamLink( downStreamLink.getDownstreamPort() );
-        System.out.println("new SystemAlert received.  Creating Alert :" + a.getId() + " for device : " + a.getDeviceName() + " for upstreamLink : " + a.getUpstreamLink());
+        a.setUpstreamLink( upStreamLink );
+        a.setDownstreamLink( downStreamLink );
+        System.out.println("new SystemAlert received.  Creating Alert.");
         retract($s);
         insert(a);
 end
@@ -54,8 +58,8 @@ rule "Check Against a Derived Alert"
         Alert a = new Alert( $systemAlert );
         Link upstreamLink = dataService.lookupUpstreamLink( a.getDeviceName() );
         Link downStreamLink = dataService.lookupDownstreamLink( a.getDeviceName() );
-        a.setUpstreamLink( upstreamLink.getUpstreamPort() );
-        a.setDownstreamLink( downStreamLink.getDownstreamPort() );
+        a.setUpstreamLink( upstreamLink );
+        a.setDownstreamLink( downStreamLink );
         System.out.println("Alert created");
         $derivedAlert.addAlert( a );
         System.out.println("Added to DerivedAlert");
@@ -78,8 +82,8 @@ rule "Check Against Existing Alerts"
         Alert a = new Alert( $systemAlert );
         Link upstreamLink = dataService.lookupUpstreamLink( a.getDeviceName() );
         Link downStreamLink = dataService.lookupDownstreamLink( a.getDeviceName() );
-        a.setUpstreamLink( upstreamLink.getUpstreamPort() );
-        a.setDownstreamLink( downStreamLink.getDownstreamPort() );
+        a.setUpstreamLink( upstreamLink );
+        a.setDownstreamLink( downStreamLink );
         System.out.println("Alert created");
         #create DerivedAlert
         DerivedAlert derivedAlert = new DerivedAlert();

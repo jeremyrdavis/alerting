@@ -8,11 +8,11 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.jboss.examples.drools.cep.alerts.model.Alert;
+import com.jboss.examples.drools.cep.alerts.model.AlertStatus;
+import com.jboss.examples.drools.cep.alerts.model.DerivedAlert;
+import com.jboss.examples.drools.cep.alerts.model.SystemAlert;
 import com.sample.Alarm;
-import com.sample.Alert;
-import com.sample.AlertStatus;
-import com.sample.DerivedAlert;
-import com.sample.SystemAlert;
 
 
 public class NewSystemAlertTest extends BaseAlertTest {
@@ -28,8 +28,8 @@ public class NewSystemAlertTest extends BaseAlertTest {
 		System.out.println("testCreatingNewAlertFromSystemAlert");
 		StatefulKnowledgeSession ksession = createKnowledgeSession();
 		
-		SystemAlert systemAlert = new SystemAlert("25", Calendar.getInstance().getTime(), "deviceName",
-				"interfaceName", AlertStatus.ACTIVE);
+		SystemAlert systemAlert = new SystemAlert("25", Calendar.getInstance().getTime(), "DEVICE1",
+				"DEVICE1A", AlertStatus.ACTIVE);
 		ksession.insert(systemAlert);
 		ksession.fireAllRules();
 	}
@@ -57,11 +57,11 @@ public class NewSystemAlertTest extends BaseAlertTest {
 		System.out.println("testSystemAlertCorrelatesWithExistingAlert");
 		StatefulKnowledgeSession ksession = createKnowledgeSession();
 		
-		Alert alert = new Alert("1234", Calendar.getInstance().getTime(), "deviceName", "interfaceName",
-				AlertStatus.ACTIVE, "upstreamLink", "downstreamLink");
+		Alert alert = new Alert();
+		alert.setDeviceName("DEVICE1A");
 		
-		SystemAlert systemAlert = new SystemAlert("25", Calendar.getInstance().getTime(), "deviceName",
-				"interfaceName", AlertStatus.ACTIVE);
+		SystemAlert systemAlert = new SystemAlert("25", Calendar.getInstance().getTime(), "DEVICE1A",
+				"", AlertStatus.ACTIVE);
 		
 		ksession.insert(alert);
 		ksession.insert(systemAlert);
@@ -72,8 +72,9 @@ public class NewSystemAlertTest extends BaseAlertTest {
 	public void testCAPAlert() throws Exception{
 		System.out.println("*************************************");
 		System.out.println("testCAPAlert");
-		Alert alert = new Alert("1234", Calendar.getInstance().getTime(), "deviceName", "interfaceName",
-				AlertStatus.ACTIVE, "upstreamLink", "downstreamLink");
+		Alert alert = new Alert();
+		alert.setDeviceName("DEVICE1A");
+		alert.setTime(Calendar.getInstance().getTime());
 		StatefulKnowledgeSession ksession = createKnowledgeSession();
 		ksession.insert(alert);
         Thread.currentThread().sleep( 7000 );

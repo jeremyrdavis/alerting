@@ -36,6 +36,8 @@ public class BaseAlertTest {
 	protected static KnowledgeBase readKnowledgeBase() throws Exception {
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
 				.newKnowledgeBuilder();
+		
+		// add .drl files
 		for (int i = 0; i < drlFiles.length; i++) {
 			kbuilder.add(ResourceFactory.newClassPathResource(drlFiles[i]),
 					ResourceType.DRL);
@@ -46,6 +48,8 @@ public class BaseAlertTest {
 			for( int i = 0; i < flowFiles.length; i++ )
 				kbuilder.add(ResourceFactory.newClassPathResource(flowFiles[i]), ResourceType.DRF);
 		}
+		
+		// check to see if we have any errors before continuing
 		KnowledgeBuilderErrors errors = kbuilder.getErrors();
 		if (errors.size() > 0) {
 			for (KnowledgeBuilderError error : errors) {

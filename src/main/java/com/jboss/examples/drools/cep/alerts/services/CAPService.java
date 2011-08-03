@@ -1,7 +1,7 @@
 package com.jboss.examples.drools.cep.alerts.services;
 
-import com.sample.Alert;
-import com.sample.DerivedAlert;
+import com.jboss.examples.drools.cep.alerts.model.Alert;
+import com.jboss.examples.drools.cep.alerts.model.DerivedAlert;
 
 public class CAPService {
 	
