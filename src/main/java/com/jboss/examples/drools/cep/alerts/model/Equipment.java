@@ -1,6 +1,10 @@
 package com.jboss.examples.drools.cep.alerts.model;
 
-public class Equipment {
+import java.io.Serializable;
+
+public class Equipment implements Serializable{
+
+	private static final long serialVersionUID = 7453763859207685282L;
 
 	private int id;
 	private int equipmentId;
@@ -8,6 +12,15 @@ public class Equipment {
 	
 	public Equipment() {
 		super();
+	}
+	
+	
+
+	public Equipment(int id, int equipmentId, String deviceName) {
+		super();
+		this.id = id;
+		this.equipmentId = equipmentId;
+		this.deviceName = deviceName;
 	}
 
 	//--------------------------------------------------------------------------

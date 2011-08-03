@@ -5,17 +5,31 @@
          type="RuleFlow" name="Device2RuleFlow" id="Device2" package-name="com.jboss.examples.drools.cep.alerts.rules" routerLayout="2" >
 
   <header>
+    <imports>
+      <import name="com.jboss.examples.drools.cep.alerts.model.Equipment" />
+    </imports>
   </header>
 
   <nodes>
     <start id="1" name="Start" x="237" y="11" width="48" height="48" />
-    <ruleSet id="2" name="Validate Alert" x="192" y="131" width="146" height="48" ruleFlowGroup="Device2 Rules" />
-    <end id="3" name="End" x="241" y="314" width="48" height="48" />
+    <ruleSet id="2" name="Validate Alert" x="187" y="139" width="146" height="48" ruleFlowGroup="Device2 Validation Rules" />
+    <end id="3" name="End" x="235" y="446" width="48" height="48" />
+    <split id="4" name="Gateway" x="234" y="241" width="49" height="49" type="3" >
+      <constraints>
+        <constraint toNodeId="5" toType="DROOLS_DEFAULT" name="constraint" priority="1" type="rule" dialect="mvel" >Equipment( deviceName == 'DEVICE2' )</constraint>
+        <constraint toNodeId="3" toType="DROOLS_DEFAULT" name="constraint" priority="1" type="rule" dialect="mvel" >not Equipment( deviceName != "DEVICE2" )</constraint>
+      </constraints>
+    </split>
+    <ruleSet id="5" name="Device2Rule" x="359" y="325" width="126" height="48" ruleFlowGroup="Device2 Rules" />
+    <end id="6" name="End" x="397" y="446" width="48" height="48" />
   </nodes>
 
   <connections>
     <connection from="1" to="2" />
-    <connection from="2" to="3" />
+    <connection from="4" to="3" />
+    <connection from="2" to="4" />
+    <connection from="4" to="5" />
+    <connection from="5" to="6" />
   </connections>
 
 </process>

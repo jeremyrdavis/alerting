@@ -12,9 +12,20 @@ global com.jboss.examples.drools.cep.alerts.services.CAPService capService;
 global com.jboss.examples.drools.cep.alerts.services.DataService dataService;
 
 rule "Device name must be DEVICE2"
-    ruleflow-group "Device2 Rules"
+    ruleflow-group "Device2 Validation Rules"
     when
         $alert : Alert( )
     then
         System.out.println("Alert");
+        Equipment $equipment = dataService.lookupEquipment( $alert.getDeviceName() );
+        insert($equipment);
+        System.out.println("Equipment inserted : " + $equipment.getDeviceName());
+end
+
+rule "Device2 exists"
+    ruleflow-group "Device2 Rules"
+    when
+        Equipment( deviceName == "DEVICE2" )
+    then
+        System.out.println("Device2!");
 end
