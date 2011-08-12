@@ -27,8 +27,25 @@ rule "Create New Alert When SystemAlert Arrives"
         Link upStreamLink = dataService.lookupUpstreamLink( a.getDeviceName() );
         a.setUpstreamLink( upStreamLink );
         a.setDownstreamLink( downStreamLink );
-        System.out.println("new SystemAlert received.  Creating Alert.");
+        System.out.println("new SystemAlert received.  Creating Alert for Alert " + a.getId());
         retract($s);
         insert(a);
+end
+
+rule "Check New Alert Against Existing Alerts"
+    ruleflow-group "Check Against Existing"
+    when
+       $alert : Alert()
+       $relatedAlert : Alert( deviceName == $alert.deviceName )
+    then
+        System.out.println("Previous Alert exists");
+        #create Alert
+        #create DerivedAlert
+        DerivedAlert derivedAlert = new DerivedAlert();
+        derivedAlert.addAlert($alert);
+        derivedAlert.addAlert($relatedAlert);
+        retract($alert);
+        retract($relatedAlert);
+        insert(derivedAlert);
 end
 

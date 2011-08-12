@@ -2,6 +2,8 @@ package com.jboss.examples.drools.cep.alerts.model;
 
 import java.util.Date;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 public class Alert {
 
@@ -42,12 +44,19 @@ public class Alert {
 	 * @param systemAlert
 	 */
 	public Alert(SystemAlert systemAlert){
+		this.id = systemAlert.getId();
 		this.time = systemAlert.getTime();
 		this.deviceName = systemAlert.getDeviceName();
 		this.interfaceName = systemAlert.getInterfaceName();
 		this.status = systemAlert.getStatus();
 	}
-
+	
+	public String toString(){
+		return new ToStringBuilder(this).append("id", id).append("time", time).append("deviceName", deviceName).append("upstreamLink", upstreamLink).toString();
+	}
+	//--------------------------------------------------------------------------
+	//	generated
+	//--------------------------------------------------------------------------
 	public String getId() {
 		return id;
 	}
