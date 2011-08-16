@@ -12,9 +12,9 @@
 
   <nodes>
     <start id="1" name="Start" x="237" y="11" width="48" height="48" />
-    <ruleSet id="2" name="Validate Alert" x="187" y="139" width="146" height="48" ruleFlowGroup="Device2 Validation Rules" />
+    <ruleSet id="2" name="Check Against Derived Alerts" x="184" y="111" width="146" height="48" ruleFlowGroup="Verify Derived Alerts" />
     <end id="3" name="End" x="235" y="446" width="48" height="48" />
-    <split id="4" name="Gateway" x="234" y="241" width="49" height="49" type="3" >
+    <split id="4" name="Gateway" x="235" y="326" width="49" height="49" type="3" >
       <constraints>
         <constraint toNodeId="5" toType="DROOLS_DEFAULT" name="constraint" priority="1" type="rule" dialect="mvel" >Equipment( deviceName == 'DEVICE2' )</constraint>
         <constraint toNodeId="3" toType="DROOLS_DEFAULT" name="constraint" priority="1" type="rule" dialect="mvel" >not Equipment( deviceName != "DEVICE2" )</constraint>

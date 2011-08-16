@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 public class DerivedAlert {
 
 	String atomicAlertIds;
@@ -61,6 +63,9 @@ public class DerivedAlert {
 		return deviceNames;
 	}
 
+	public String toString(){
+		return new ToStringBuilder(this).append("Atomic Alert Ids", atomicAlertIds).append("Device Name", deviceNames).append("Link Ids", linkIds).append("Hub Host Ids", hubHostIds).toString();
+	}
 	// --------------------------------------------------------------------------
 
 	public void setDeviceNames(List<String> deviceNames) {
