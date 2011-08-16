@@ -1,16 +1,17 @@
 package com.jboss.examples.drools.cep.alerts.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-
 public class DerivedAlert {
-	
+
 	String atomicAlertIds;
 
 	List<String> deviceNames;
-	
+
 	List<String> linkIds;
-	
+
 	List<String> hubHostIds;
 
 	public DerivedAlert() {
@@ -25,15 +26,42 @@ public class DerivedAlert {
 		this.linkIds = linkIds;
 		this.hubHostIds = hubHostIds;
 	}
-	
-	public void addAlert( Alert a ){
-		System.out.println("Foo");
-	}
-	//--------------------------------------------------------------------------
 
+	public void addAlert(Alert alertToAdd) {
+		getDeviceNames().add(alertToAdd.getDeviceName());
+	}
+
+	public boolean containsDevice(String deviceName) {
+		// basic sanity checks
+		if (deviceName == null)
+			return false;
+		if ("".equals(deviceName))
+			return false;
+		if (this.deviceNames == null || this.deviceNames.isEmpty())
+			return false;
+
+		// check for existence
+		Iterator<String> it = this.deviceNames.iterator();
+		while (it.hasNext()) {
+			if (deviceName.equals(it.next()))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns an empty ArrayList<String> if null.
+	 * 
+	 * @return List<String> of device names in the derived alert or an empty
+	 *         List<String>
+	 */
 	public List<String> getDeviceNames() {
+		if (this.deviceNames == null)
+			this.deviceNames = new ArrayList<String>(0);
 		return deviceNames;
 	}
+
+	// --------------------------------------------------------------------------
 
 	public void setDeviceNames(List<String> deviceNames) {
 		this.deviceNames = deviceNames;
@@ -62,7 +90,5 @@ public class DerivedAlert {
 	public void setAtomicAlertIds(String atomicAlertIds) {
 		this.atomicAlertIds = atomicAlertIds;
 	}
-	
-	
-	
+
 }
