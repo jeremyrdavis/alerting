@@ -1,0 +1,40 @@
+#created on: Sep 22, 2011
+package com.jboss.examples.alerting.flow
+
+#list any import classes here.
+import com.jboss.examples.drools.cep.alerts.model.Alert;
+import com.jboss.examples.drools.cep.alerts.errors.AlertValidationError;
+import com.jboss.examples.drools.cep.alerts.errors.AlertValidationErrorCodes;
+
+
+
+#declare any global variables here
+
+
+rule "Validate DeviceName"
+    ruleflow-group "Validation Group"
+    dialect "mvel"
+    when
+       $a : Alert( deviceName ==  null || deviceName == "" )
+    then
+       System.out.println(" deviceName == null ");
+       insert( new AlertValidationError($a, AlertValidationErrorCodes.MISSING_DEVICE.message) );
+end
+
+rule "AlertValidationError Exists"
+    ruleflow-group "Validation Group"
+    dialect "mvel"
+    when
+        $a : AlertValidationError()
+    then
+        System.out.println( $a );
+end 
+
+rule "Your Second Rule"
+    ruleflow-group "Error Evaluation Group"
+    when
+        #conditions
+    then
+        #actions
+
+end
