@@ -2,7 +2,12 @@
 package com.jboss.examples.drools.cep.alerts.rules
 
 #list any import classes here.
+import java.util.List;
+import java.util.ArrayList;
+
 import com.jboss.examples.drools.cep.alerts.model.Alert;
+import com.jboss.examples.drools.cep.alerts.model.AlertingResult;
+import com.jboss.examples.drools.cep.alerts.model.AlertingResult.AlertingResultCode;
 import com.jboss.examples.drools.cep.alerts.model.Attribute;
 import com.jboss.examples.drools.cep.alerts.model.DerivedAlert;
 import com.jboss.examples.drools.cep.alerts.model.Equipment;
@@ -17,35 +22,49 @@ import com.jboss.examples.drools.cep.alerts.services.DataService;
 global com.jboss.examples.drools.cep.alerts.services.CAPService capService;
 global com.jboss.examples.drools.cep.alerts.services.DataService dataService;
 
+declare Alert 
+   @role(event) 
+end
+
+/*
+    An Alert is created from a SystemAlert
+*/
 rule "Create New Alert When SystemAlert Arrives"
-    ruleflow-group "Alert Flow Rules"
     when
         $s : SystemAlert( status == AlertStatus.ACTIVE )
     then
         Alert a = new Alert( $s );
-        Link downStreamLink = dataService.lookupDownstreamLink( a.getDeviceName() );
-        Link upStreamLink = dataService.lookupUpstreamLink( a.getDeviceName() );
-        a.setUpstreamLink( upStreamLink );
-        a.setDownstreamLink( downStreamLink );
-        System.out.println("new SystemAlert received.  Creating Alert for Alert " + a.getId());
+        Link $downStreamLink = dataService.lookupDownstreamLink( $s.getDeviceName() );
+        Link $upStreamLink = dataService.lookupUpstreamLink( $s.getDeviceName() );
+        a.setUpstreamLink( $upStreamLink );
+        a.setDownstreamLink( $downStreamLink );
+        System.out.println("xxx new SystemAlert received.  Creating Alert for Alert " + a.getId());
         retract($s);
         insert(a);
 end
 
-rule "Check New Alert Against Existing Alerts"
-    ruleflow-group "Check Against Existing"
+rule "Multiple Alerts"
+    duration( 1m )
     when
-       $alert : Alert()
-       $relatedAlert : Alert( deviceName == $alert.deviceName )
+        $a : Alert()
+        $l : List( ) from accumulate( $b : Alert( deviceName == $a.deviceName, this after[0,1m] $a ), collectList($b) )
     then
-        System.out.println("Previous Alert exists");
-        #create Alert
-        #create DerivedAlert
-        DerivedAlert derivedAlert = new DerivedAlert();
-        derivedAlert.addAlert($alert);
-        derivedAlert.addAlert($relatedAlert);
-        retract($alert);
-        retract($relatedAlert);
-        insert(derivedAlert);
+        DerivedAlert derivedAlert = new DerivedAlert( );
+        derivedAlert.addAlerts( $l );
+        for ( Alert alert : new ArrayList<Alert>((List<Alert>)$l) ){
+            retract( alert );
+        }
+        capService.sendMultipleCAPAlert( derivedAlert );
+end
+
+rule "Single Alert"
+    // salience will prevent the Multiple Alerts rule from firing if no correlating Alerts are created
+    salience 10
+    when
+        $a : Alert()
+        not Alert( this != $a, deviceName == $a.deviceName, this after[0,1m] $a )
+    then
+        capService.sendCAPAlert( $a );
+        retract( $a );
 end
 

@@ -9,6 +9,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class DerivedAlert {
 
 	String atomicAlertIds;
+	
+	List<Alert> alerts;
 
 	List<String> deviceNames;
 
@@ -49,6 +51,16 @@ public class DerivedAlert {
 				return true;
 		}
 		return false;
+	}
+	
+	public void addAlerts(List<Alert> alertsToAdd){
+		if(this.alerts ==  null) this.alerts = new ArrayList<Alert>();
+		this.alerts.addAll(alertsToAdd);
+	}
+	
+	public void addNewAlert( Alert alertToAdd ){
+		if(this.alerts ==  null) this.alerts = new ArrayList<Alert>();
+		this.alerts.add(alertToAdd);
 	}
 
 	/**
@@ -95,5 +107,6 @@ public class DerivedAlert {
 	public void setAtomicAlertIds(String atomicAlertIds) {
 		this.atomicAlertIds = atomicAlertIds;
 	}
+	
 
 }
