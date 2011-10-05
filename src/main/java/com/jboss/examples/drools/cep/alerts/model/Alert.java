@@ -2,23 +2,23 @@ package com.jboss.examples.drools.cep.alerts.model;
 
 import java.util.Date;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-
 
 public class Alert {
 
 	protected String id;
-	
+
 	protected Date time;
-	
+
 	protected String deviceName;
-	
+
 	protected String interfaceName;
-	
+
 	protected AlertStatus status;
-	
+
 	protected Link upstreamLink;
-	
+
 	protected Link downstreamLink;
 
 	public Alert() {
@@ -37,26 +37,37 @@ public class Alert {
 		this.upstreamLink = upstreamLink;
 		this.downstreamLink = downstreamLink;
 	}
-	
+
 	/**
 	 * Constructor for use with a SystemAlert.
 	 * 
 	 * @param systemAlert
 	 */
-	public Alert(SystemAlert systemAlert){
+	public Alert(SystemAlert systemAlert) {
 		this.id = systemAlert.getId();
 		this.time = systemAlert.getTime();
 		this.deviceName = systemAlert.getDeviceName();
 		this.interfaceName = systemAlert.getInterfaceName();
 		this.status = systemAlert.getStatus();
 	}
-	
-	public String toString(){
-		return new ToStringBuilder(this).append("id", id).append("time", time).append("deviceName", deviceName).append("upstreamLink", upstreamLink).toString();
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(98587971, 810426665).append(id).append(time)
+				.append(deviceName).append(interfaceName).append(status)
+				.append(upstreamLink).append(downstreamLink).toHashCode();
 	}
-	//--------------------------------------------------------------------------
-	//	generated
-	//--------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("id", id).append("time", time)
+				.append("deviceName", deviceName)
+				.append("upstreamLink", upstreamLink).toString();
+	}
+
+	// --------------------------------------------------------------------------
+	// generated
+	// --------------------------------------------------------------------------
 	public String getId() {
 		return id;
 	}
@@ -112,6 +123,5 @@ public class Alert {
 	public void setDownstreamLink(Link downstreamLink) {
 		this.downstreamLink = downstreamLink;
 	}
-	
-	
+
 }

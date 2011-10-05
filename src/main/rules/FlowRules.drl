@@ -21,14 +21,7 @@ rule "Validate DeviceName"
        insert( new AlertValidationError($a, AlertValidationErrorCodes.MISSING_DEVICE.message) );
 end
 
-rule "AlertValidationError Exists"
-    ruleflow-group "Validation Group"
-    dialect "mvel"
-    when
-        $a : AlertValidationError()
-    then
-        System.out.println( $a );
-end 
+rule "Validate 
 
 rule "Your Second Rule"
     ruleflow-group "Error Evaluation Group"
