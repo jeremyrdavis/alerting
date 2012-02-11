@@ -21,13 +21,3 @@ rule "Validate DeviceName"
        insert( new AlertValidationError($a, AlertValidationErrorCodes.MISSING_DEVICE.message) );
 end
 
-rule "Validate 
-
-rule "Your Second Rule"
-    ruleflow-group "Error Evaluation Group"
-    when
-        #conditions
-    then
-        #actions
-
-end
